@@ -140,10 +140,10 @@ end
 makeDisplay()
 updateDisplay()
 
+zoning = false
 windower.register_event('incoming chunk',function(id,original,modified,injected,blocked)
+	local packet = packets.parse('incoming', original)
 	if id == 0x5B and not zoning then
-		local packet = packets.parse('incoming', original)
-		
 		if box_ids[packet['ID']] then
 			box_ids[packet['ID']].color = colors[box_ids[packet['ID']].type]
 			updateDisplay()
@@ -154,17 +154,17 @@ windower.register_event('incoming chunk',function(id,original,modified,injected,
         	updateDisplay()
         end
     elseif id == 0x0D2 and not zoning then
-    	local packet = packets.parse('incoming', original)
-
-    	if res.items[packet['Item']].en == "Old Case" then
-    		count.nq_case = count.nq_case + 1
-    		updateDisplay()
-    	elseif res.items[packet['Item']].en == "Old Case +1" then
-    		count.hq_case = count.hq_case + 1
-    		updateDisplay()
-    	elseif res.items[packet['Item']].en == "Ra'Kaz. Sapphire" then
-    		count.sapphires = count.sapphires + 1
-    		updateDisplay()
+     	if packet['Item'] > 0 then
+	    	if res.items[packet['Item']].en == "Old Case" then
+	    		count.nq_case = count.nq_case + 1
+	    		updateDisplay()
+	    	elseif res.items[packet['Item']].en == "Old Case +1" then
+	    		count.hq_case = count.hq_case + 1
+	    		updateDisplay()
+	    	elseif res.items[packet['Item']].en == "Ra'Kaz. Sapphire" then
+	    		count.sapphires = count.sapphires + 1
+	    		updateDisplay()
+			end
 		end
 	end
 
